@@ -29,8 +29,7 @@ class PrefixCommand extends Command {
           'Current prefix is "$prefix"',
         ));
       } else if (arguments.first == 'set') {
-        final member =
-            await await context.guild?.fetchMember(context.author.id);
+        final member = await context.guild?.fetchMember(context.author.id);
         executeWithPermissions(
           member: member as Member,
           permission: PermissionsConstants.manageGuild,

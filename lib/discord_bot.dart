@@ -23,8 +23,9 @@ class DiscordBot {
     });
 
     bot.onMessageReceived.listen((e) {
-    if (e.message.content == "/test") {
-      e.message.channel.sendMessage(MessageBuilder.content("Test works!"));
+      if (e.message.content == '/test') {
+        e.message.channel.sendMessage(MessageBuilder.content('Test works!'));
+        e.message.createReaction(IGuildEmoji.fromId(863148129901346858));
       }
     });
 
@@ -53,7 +54,6 @@ class DiscordBot {
     );
 
     registerCommands();
-    
   }
 
   void registerCommands() {

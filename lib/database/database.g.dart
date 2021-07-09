@@ -132,10 +132,12 @@ class $PreferencesTable extends Preferences
   final String? _alias;
   $PreferencesTable(this._db, [this._alias]);
   final VerificationMeta _guildIdMeta = const VerificationMeta('guildId');
+  @override
   late final GeneratedColumn<int?> guildId = GeneratedColumn<int?>(
       'guild_id', aliasedName, false,
       typeName: 'INTEGER', requiredDuringInsert: false);
   final VerificationMeta _prefixMeta = const VerificationMeta('prefix');
+  @override
   late final GeneratedColumn<String?> prefix = GeneratedColumn<String?>(
       'prefix', aliasedName, false,
       typeName: 'TEXT',

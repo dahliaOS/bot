@@ -11,7 +11,7 @@ class PreferencesHelper extends DatabaseAccessor<Database>
   PreferencesHelper(this.db) : super(db);
 
   Future<String> getPrefixForGuild(int guildId) async {
-    final guild = await select(preferences);
+    final guild = select(preferences);
     guild.where((tbl) => tbl.guildId.equals(guildId));
     final guilds = await guild.get();
     return guilds.first.prefix;
