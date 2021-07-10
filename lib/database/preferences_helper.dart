@@ -30,6 +30,4 @@ class PreferencesHelper extends DatabaseAccessor<Database>
       mode: InsertMode.replace,
     );
   }
-
-  static final instance = PreferencesHelper(Database.instance);
 }

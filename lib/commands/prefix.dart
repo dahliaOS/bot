@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:discord_bot/core/command.dart';
-import 'package:discord_bot/database/preferences_helper.dart';
+import 'package:discord_bot/discord_bot.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commander/commander.dart';
 
@@ -23,8 +23,7 @@ class PrefixCommand extends Command {
   FutureOr<void> onRun(CommandContext context, List<String> arguments) async {
     if (context.guild != null) {
       if (arguments.first == 'get') {
-        final prefix = await PreferencesHelper.instance
-            .getPrefixForGuild(context.guild!.id.id);
+        final prefix = await helper.getPrefixForGuild(context.guild!.id.id);
         await context.reply(MessageBuilder.content(
           'Current prefix is "$prefix"',
         ));
@@ -35,7 +34,7 @@ class PrefixCommand extends Command {
           permission: PermissionsConstants.manageGuild,
           onGranted: () async {
             final id = context.guild!.id.id;
-            await PreferencesHelper.instance.updatePrefix(id, arguments[1]);
+            await helper.updatePrefix(id, arguments[1]);
 
             await context.reply(MessageBuilder.content(
               'Success! Prefix is now "${arguments[1]}"',

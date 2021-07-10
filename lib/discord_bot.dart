@@ -1,9 +1,13 @@
 import 'package:discord_bot/commands/count.dart';
 import 'package:discord_bot/commands/prefix.dart';
 import 'package:discord_bot/core/command.dart';
+import 'package:discord_bot/database/database.dart';
 import 'package:discord_bot/database/preferences_helper.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commander/commander.dart';
+
+late final Database database;
+late final PreferencesHelper helper;
 
 class DiscordBot {
   late Nyxx bot;
@@ -15,11 +19,13 @@ class DiscordBot {
   ];
 
   DiscordBot() {
+    database = Database(constructDb());
+    helper = database.preferencesHelper;
     const token = 'TOKEN';
     bot = Nyxx(token, GatewayIntents.allUnprivileged);
 
     bot.onGuildCreate.listen((event) async {
-      await PreferencesHelper.instance.createPreferences(event.guild.id.id);
+      await helper.createPreferences(event.guild.id.id);
     });
 
     bot.onMessageReceived.listen((e) {
@@ -32,11 +38,10 @@ class DiscordBot {
     commander = Commander(
       bot,
       prefixHandler: (message) async {
-        print(message.channel.runtimeType);
-        if (message.channel is TextGuildChannel) {
-          final guild = message.channel as TextGuildChannel;
-          return await PreferencesHelper.instance
-              .getPrefixForGuild(guild.id.id);
+        if (message is GuildMessage) {
+          final guild = message.guild;
+          final prefix = helper.getPrefixForGuild(guild.id.id);
+          return prefix;
         }
       },
       beforeCommandHandler: (context) {

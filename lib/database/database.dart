@@ -19,12 +19,10 @@ class Preferences extends Table {
 
 @UseMoor(tables: [Preferences], daos: [PreferencesHelper])
 class Database extends _$Database {
-  Database._(QueryExecutor e) : super(e);
+  Database(QueryExecutor e) : super(e);
 
   @override
   int get schemaVersion => 1;
-
-  static final Database instance = Database._(constructDb());
 }
 
 QueryExecutor constructDb({bool logStatements = false}) {
@@ -32,7 +30,7 @@ QueryExecutor constructDb({bool logStatements = false}) {
 
   if (Platform.isMacOS || Platform.isLinux || Platform.isWindows) {
     final executor = LazyDatabase(() async {
-      final dataDir = './bin';
+      final dataDir = '.';
       final dbFile = File(p.join(dataDir, 'preferences.sqlite'));
       return VmDatabase(dbFile, logStatements: logStatements);
     });

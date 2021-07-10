@@ -23,6 +23,6 @@ class ConnectCommand extends Command {
 
   @override
   FutureOr<void> onRun(CommandContext context, List<String> arguments) {
-    final guildMember = context.member as Member;
+    //final guildMember = context.member as Member;
   }
 }
