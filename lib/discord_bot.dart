@@ -23,7 +23,20 @@ class DiscordBot {
     helper = database.preferencesHelper;
     const token = 'TOKEN';
     bot = Nyxx(token, GatewayIntents.allUnprivileged);
+    
+    // bot info
+    const VER = ("0.0.1");  
+    const SRC = ("github.com/dahliaOS/bot");
+    const LCS = ("Apache-2.0");
 
+    // fetch bot
+    print("     _");            
+    print("   _/ \\_    version: ${VER}");
+    print("  |  _  |   license: ${LCS}"); 
+    print(" <  |_|  >  source: ${SRC}");
+    print("  |_   _|");
+    print("    \\_/");  
+    
     bot.onGuildCreate.listen((event) async {
       await helper.createPreferences(event.guild.id.id);
     });
