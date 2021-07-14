@@ -23,7 +23,7 @@ class DiscordBot {
   DiscordBot() {
     database = Database(constructDb());
     helper = database.preferencesHelper;
-    const token = 'NzMzMDI4MjkzMzAwNzE1NTcy.Xw9LzA.CMlkJqq8w97NUW853etq4UI_S9Y';
+    const token = 'TOKEN';
     bot = Nyxx(token, GatewayIntents.allUnprivileged);
 
     // bot info
