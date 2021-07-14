@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commander/commander.dart';
+import 'package:discord_bot/utils/globals.dart';
 
 abstract class Command {
   String get name;
@@ -52,6 +53,7 @@ abstract class Command {
         EmbedBuilder()
           ..title = 'Usage for $name'
           ..description = description
+          ..color = embedColor
           ..fields.add(
             EmbedFieldBuilder(
               'Available usages:',

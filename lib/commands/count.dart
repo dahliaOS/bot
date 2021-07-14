@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:discord_bot/core/command.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commander/commander.dart';
+import 'package:discord_bot/utils/utils.dart';
+import 'package:discord_bot/utils/globals.dart';
 
 class CountCommand extends Command {
   @override
@@ -20,15 +22,29 @@ class CountCommand extends Command {
   @override
   FutureOr<void> onRun(CommandContext context, List<String> arguments) async {
     var messagesCount = 0;
-
-    context.channel.downloadMessages(limit: 100).listen((item) {
-      if (item.content.contains(arguments[0])) {
+    context.channel.downloadMessages(limit: 100).listen((item) async {
+      if (item.content
+          .startsWith(await BotUtils.getPrefix(context.guild!.id.id))) {
+        messagesCount;
+      } else if (item.content.contains(arguments[0])) {
         messagesCount++;
       }
     }).onDone(() {
-      context.reply(MessageBuilder.content(
-        'Found $messagesCount messages that contain "${arguments[0]}"',
-      ));
+      if (messagesCount == 0) {
+        context.reply(MessageBuilder.embed(
+          EmbedBuilder()
+            ..color = embedColor
+            ..description =
+                ':negative_squared_cross_mark: Found $messagesCount messages that contain `${arguments[0]}`',
+        ));
+      } else if (messagesCount > 0) {
+        context.reply(MessageBuilder.embed(
+          EmbedBuilder()
+            ..color = embedColor
+            ..description =
+                ':white_check_mark: Found $messagesCount messages that contain `${arguments[0]}`',
+        ));
+      }
     });
   }
 

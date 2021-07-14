@@ -1,4 +1,5 @@
 import 'package:discord_bot/commands/count.dart';
+import 'package:discord_bot/commands/help.dart';
 import 'package:discord_bot/commands/prefix.dart';
 import 'package:discord_bot/core/command.dart';
 import 'package:discord_bot/database/database.dart';
@@ -8,44 +9,38 @@ import 'package:nyxx_commander/commander.dart';
 
 late final Database database;
 late final PreferencesHelper helper;
+final names = <String>[];
+final List<Command> commands = [
+  CountCommand(),
+  PrefixCommand(),
+  HelpCommand(),
+];
 
 class DiscordBot {
   late Nyxx bot;
   late Commander commander;
 
-  final List<Command> commands = [
-    CountCommand(),
-    PrefixCommand(),
-  ];
-
   DiscordBot() {
     database = Database(constructDb());
     helper = database.preferencesHelper;
-    const token = 'TOKEN';
+    const token = 'NzMzMDI4MjkzMzAwNzE1NTcy.Xw9LzA.CMlkJqq8w97NUW853etq4UI_S9Y';
     bot = Nyxx(token, GatewayIntents.allUnprivileged);
-    
+
     // bot info
-    const VER = ("0.0.1");  
-    const SRC = ("github.com/dahliaOS/bot");
-    const LCS = ("Apache-2.0");
+    final VER = '0.0.1';
+    final SRC = 'github.com/dahliaOS/bot';
+    final LCS = 'Apache 2.0';
 
     // fetch bot
-    print("     _");            
-    print("   _/ \\_    version: ${VER}");
-    print("  |  _  |   license: ${LCS}"); 
-    print(" <  |_|  >  source: ${SRC}");
-    print("  |_   _|");
-    print("    \\_/");  
-    
+    print('     _');
+    print('   _/ \\_    version: $VER');
+    print('  |  _  |   license: $LCS');
+    print(' <  |_|  >  source: $SRC');
+    print('  |_   _|');
+    print('    \\_/');
+
     bot.onGuildCreate.listen((event) async {
       await helper.createPreferences(event.guild.id.id);
-    });
-
-    bot.onMessageReceived.listen((e) {
-      if (e.message.content == '/test') {
-        e.message.channel.sendMessage(MessageBuilder.content('Test works!'));
-        e.message.createReaction(IGuildEmoji.fromId(863148129901346858));
-      }
     });
 
     commander = Commander(
@@ -72,10 +67,19 @@ class DiscordBot {
     );
 
     registerCommands();
+    commandsInfo();
   }
 
   void registerCommands() {
     commands
         .forEach((command) => commander.registerCommand(command.name, command));
+  }
+}
+
+void commandsInfo() {
+  commands.sort((a, b) => a.name.compareTo(b.name));
+  for (final command in commands) {
+    names.add(command.name);
+    names.add(command.description);
   }
 }

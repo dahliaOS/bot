@@ -1,6 +1,3 @@
-<!--MAKE SURE TO ALSO EDIT THE BUG REPORT / FEATURE REQUEST / PULL REQUEST TEMPLATES, IT'S A MUST!!!!-->
-<!--AND THEN YOU CAN ALSO REMOVE THIS COMMENTED TEXT XDDDDDDDDDDDDDDD-->
-
 <p align="center">
 <a href="https://dahliaos.io">Website</a> ●
 <a href="https://discord.gg/7qVbJHR">Discord</a> ●
@@ -8,14 +5,34 @@
 <a href="https://opencollective.com/dahliaos">Donate</a> ●
 <a href="https://docs.dahliaos.io">Documentation</a>
 
-# name_of_repo
-Insert some badges from https://shields.io
-(Mostly a License, Issues open badges (can also be localized, website and ci/deploy badges))
+# dahliaOS Discord bot
+![Discord](https://img.shields.io/discord/576141822145986590?color=bright-green)
+![License](https://img.shields.io/github/license/dahliaos/bot?color=bright-green)
 
- - **Short introduction** of the repository (can and should be in multiple lines)
- - **Add new headers** depending on what the repo is and what you want to write
- - **Do not change** the Contribute and License header sections, they're good to go
- - **These lines in this header sections can go**, also make sure you set correct topics on the repo
+ - **Discord bot** for the dahliaOS server
+ - **Written** in Dart using the [nyxx lib](https://github.com/l7ssha/nyxx)
+ 
+ ## Running the bot
+
+ 1. Make sure you have [Dart SDK](https://dart.dev/get-dart) installed
+ 2. Clone the repo
+ ```
+ git clone https://github.com/dahliaOS/bot.git
+ ```
+ 3. Create a bot and obtain the token, read this [guide](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token)
+ 4. Insert a bot token
+ ```
+ // line 26 in lib/discord_bot.dart
+ const token = 'TOKEN';
+ ```
+ 5. CD into the dir
+ ```
+ cd bot
+ ```
+ 6. Run
+ ```
+ dart run bin/main.dart
+ ```
 
 ## Contribute
 
