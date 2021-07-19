@@ -21,8 +21,8 @@
  ```
  3. Create a bot and obtain the token, read this [guide](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token)
  4. Insert the bot token
-   1. Create a .env file in the root folder
-   2. In the .env file, write the first line as shown below:
+    1. Create a .env file in the root folder
+    2. In the .env file, write the first line as shown below:
  ```
 TOKEN='your token goes here'
  ```
