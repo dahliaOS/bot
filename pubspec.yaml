@@ -10,6 +10,7 @@ dependencies:
   nyxx: ^2.0.0-rc.10
   nyxx_commander: ^2.0.0-rc.10
   moor: ^4.4.1
+  dotenv: ^3.0.0
 
 dev_dependencies:
   build_runner:

@@ -20,10 +20,11 @@
  git clone https://github.com/dahliaOS/bot.git
  ```
  3. Create a bot and obtain the token, read this [guide](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token)
- 4. Insert a bot token
+ 4. Insert the bot token
+   1. Create a .env file in the root folder
+   2. In the .env file, write the first line as shown below:
  ```
- // line 26 in lib/discord_bot.dart
- const token = 'TOKEN';
+TOKEN='your token goes here'
  ```
  5. CD into the dir
  ```

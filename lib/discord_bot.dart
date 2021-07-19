@@ -6,6 +6,7 @@ import 'package:discord_bot/database/database.dart';
 import 'package:discord_bot/database/preferences_helper.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commander/commander.dart';
+import 'package:dotenv/dotenv.dart' show load, env;
 
 late final Database database;
 late final PreferencesHelper helper;
@@ -21,10 +22,11 @@ class DiscordBot {
   late Commander commander;
 
   DiscordBot() {
+    load();
     database = Database(constructDb());
     helper = database.preferencesHelper;
-    const token = 'TOKEN';
-    bot = Nyxx(token, GatewayIntents.allUnprivileged);
+    final token = env['TOKEN'];
+    bot = Nyxx(token!, GatewayIntents.allUnprivileged);
 
     // bot info
     final VER = '0.0.1';
