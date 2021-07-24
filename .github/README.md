@@ -28,19 +28,19 @@
  1. Insert your GitHub PAT, GitHub username and the bot token
     1. Create a .env file in the root folder
     2. Fill it in as shown below:
- ```
-TOKEN='your bot token goes here'
-GITHUB_TOKEN='your github token goes here'
-GITHUB_USERNAME='your github username goes here'
- ```
+     ```
+    TOKEN='your bot token goes here'
+    GITHUB_TOKEN='your github token goes here'
+    GITHUB_USERNAME='your github username goes here'
+     ```
  1. CD into the dir
- ```
- cd bot
- ```
+     ```
+     cd bot
+     ```
  1. Run
- ```
- dart run bin/main.dart
- ```
+     ```
+     dart run bin/main.dart
+     ```
 
 ## Contribute
 
