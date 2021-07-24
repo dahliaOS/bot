@@ -16,9 +16,9 @@
 
  1. Make sure you have [Dart SDK](https://dart.dev/get-dart) installed
  1. Clone the repo
- ```
- git clone https://github.com/dahliaOS/bot.git
- ```
+     ```
+     git clone https://github.com/dahliaOS/bot.git
+     ```
  1. Create a bot and obtain the token, read this [guide](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token)
  1. Create a GitHub Personal Access Token, read this [guide](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token)
     * This is optional and it's used for the GitHub command, if you don't want to insert your GitHub PAT and username, just leave it out, the only difference is that your API calls will be limited to 60 per hour.
