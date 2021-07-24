@@ -126,7 +126,7 @@ packages:
       name: code_builder
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.0"
+    version: "4.1.0"
   collection:
     dependency: transitive
     description:
@@ -212,7 +212,7 @@ packages:
     source: hosted
     version: "2.0.0"
   http:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: http
       url: "https://pub.dartlang.org"
@@ -308,7 +308,7 @@ packages:
       name: nyxx
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0-rc.10"
+    version: "2.0.0-rc.11"
   nyxx_commander:
     dependency: "direct main"
     description:

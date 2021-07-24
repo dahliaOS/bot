@@ -1,6 +1,7 @@
 import 'package:discord_bot/commands/count.dart';
 import 'package:discord_bot/commands/help.dart';
 import 'package:discord_bot/commands/prefix.dart';
+import 'package:discord_bot/commands/github.dart';
 import 'package:discord_bot/core/command.dart';
 import 'package:discord_bot/database/database.dart';
 import 'package:discord_bot/database/preferences_helper.dart';
@@ -15,6 +16,7 @@ final List<Command> commands = [
   CountCommand(),
   PrefixCommand(),
   HelpCommand(),
+  GitHubCommand(),
 ];
 
 class DiscordBot {
