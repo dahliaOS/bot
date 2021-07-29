@@ -22,44 +22,32 @@ class GitHubOrg {
       );
 }
 
-class GitHubRepos {
-  final String repoNames;
-
-  const GitHubRepos({
-    required this.repoNames,
-  });
-
-  factory GitHubRepos.fromJson(Map<String, dynamic> json) => GitHubRepos(
-        repoNames: json['name'],
-      );
-}
-
 class GitHubRepo {
   final String name;
-  final String language;
+  final String? language;
   final String url;
-  final int stars_count;
-  final String description;
-  final int open_issues_count;
-  final int forks_count;
+  final int starsCount;
+  final String? description;
+  final int openIssuesCount;
+  final int forksCount;
 
   const GitHubRepo({
     required this.name,
     required this.language,
     required this.url,
-    required this.stars_count,
+    required this.starsCount,
     required this.description,
-    required this.open_issues_count,
-    required this.forks_count,
+    required this.openIssuesCount,
+    required this.forksCount,
   });
 
   factory GitHubRepo.fromJson(Map<String, dynamic> json) => GitHubRepo(
         name: json['name'],
         language: json['language'],
         url: json['html_url'],
-        stars_count: json['stargazers_count'],
+        starsCount: json['stargazers_count'],
         description: json['description'],
-        open_issues_count: json['open_issues_count'],
-        forks_count: json['forks_count'],
+        openIssuesCount: json['open_issues_count'],
+        forksCount: json['forks_count'],
       );
 }

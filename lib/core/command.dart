@@ -57,7 +57,7 @@ abstract class Command {
           ..fields.add(
             EmbedFieldBuilder(
               'Available usages:',
-              usages.map((e) => '- `$e`').join('\n'),
+              usages.map((e) => '`$e`').join('\n'),
             ),
           ),
       ),

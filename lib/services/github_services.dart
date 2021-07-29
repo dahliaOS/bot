@@ -8,12 +8,7 @@ import 'package:discord_bot/services/github_model.dart';
 final githubToken = env['GITHUB_TOKEN'];
 final githubUsername = env['GITHUB_USERNAME'];
 
-GitHubOrg GitHubOrgFromJson(String str) => GitHubOrg.fromJson(json.decode(str));
-
-GitHubRepo GitHubRepoFromJson(String str) =>
-    GitHubRepo.fromJson(json.decode(str));
-
-Future<GitHubOrg> OrgInfo() async {
+Future<GitHubOrg> getOrgInfo() async {
   final responseOrgInfo = await http.get(
     Uri.parse('https://api.github.com/orgs/dahliaOS'),
     headers: {
@@ -21,13 +16,13 @@ Future<GitHubOrg> OrgInfo() async {
     },
   );
   if (responseOrgInfo.statusCode == 200) {
-    return GitHubOrgFromJson(responseOrgInfo.body);
+    return GitHubOrg.fromJson(json.decode(responseOrgInfo.body));
   } else {
     throw Exception('Failed to fetch data from the GitHub API.');
   }
 }
 
-Future<List<GitHubRepos>> Repos() async {
+Future<List<GitHubRepo>> getRepos() async {
   final responseRepos = await http.get(
     Uri.parse('https://api.github.com/orgs/dahliaOS/repos'),
     headers: {
@@ -36,17 +31,19 @@ Future<List<GitHubRepos>> Repos() async {
   );
   if (responseRepos.statusCode == 200) {
     final dataReposInfo = json.decode(responseRepos.body) as List<dynamic>;
-    final allNames = <GitHubRepos>[];
-    for (dynamic repo in dataReposInfo) {
-      allNames.add(GitHubRepos.fromJson(repo['name']));
+    final allNames = <GitHubRepo>[];
+    for (final repo in dataReposInfo.cast<Map<String, dynamic>>()) {
+      print(repo['name']);
+      allNames.add(GitHubRepo.fromJson(repo));
     }
+    print(allNames);
     return allNames;
   } else {
     throw Exception('Failed to fetch data from the GitHub API.');
   }
 }
 
-Future<GitHubRepo> RepoInfo(String repo) async {
+Future<GitHubRepo> getRepoInfo(String repo) async {
   final responseRepoInfo = await http.get(
     Uri.parse('https://api.github.com/repos/dahliaOS/$repo'),
     headers: {
@@ -54,7 +51,7 @@ Future<GitHubRepo> RepoInfo(String repo) async {
     },
   );
   if (responseRepoInfo.statusCode == 200) {
-    return GitHubRepoFromJson(responseRepoInfo.body);
+    return GitHubRepo.fromJson(json.decode(responseRepoInfo.body));
   } else {
     throw Exception('Failed to fetch data from the GitHub API.');
   }

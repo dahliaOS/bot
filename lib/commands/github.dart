@@ -24,58 +24,75 @@ class GitHubCommand extends Command {
   @override
   FutureOr<void> onRun(CommandContext context, List<String> arguments) async {
     if (arguments.first == 'org') {
-      final GitHubOrgInfo = await OrgInfo();
-      if (GitHubOrgInfo.name.isNotEmpty) {
-        await context.reply(MessageBuilder.embed(EmbedBuilder()
-          ..color = embedColor
-          ..title = 'dahliaOS GitHub organization'
-          ..url = GitHubOrgInfo.url
-          ..thumbnailUrl = GitHubOrgInfo.avatar
-          ..fields.add(EmbedFieldBuilder('Name', GitHubOrgInfo.name))
-          ..fields
-              .add(EmbedFieldBuilder('Description', GitHubOrgInfo.description))
-          ..fields
-              .add(EmbedFieldBuilder('Contact mail', GitHubOrgInfo.contact))));
+      final org = await getOrgInfo();
+      if (org.name.isNotEmpty) {
+        await context.reply(
+          MessageBuilder.embed(
+            EmbedBuilder()
+              ..color = embedColor
+              ..title = 'dahliaOS GitHub organization'
+              ..url = org.url
+              ..thumbnailUrl = org.avatar
+              ..fields.add(EmbedFieldBuilder('Name', org.name))
+              ..fields.add(EmbedFieldBuilder('Description', org.description))
+              ..fields.add(EmbedFieldBuilder('Contact mail', org.contact)),
+          ),
+        );
       } else {
-        await context.reply(MessageBuilder.embed(EmbedBuilder()
-          ..color = embedColor
-          ..title = 'API Error'
-          ..description = 'Failed to fetch data from the GitHub API.'));
+        await context.reply(
+          MessageBuilder.embed(EmbedBuilder()
+            ..color = embedColor
+            ..title = 'API Error'
+            ..description = 'Failed to fetch data from the GitHub API.'),
+        );
       }
     } else if (arguments.first == 'repos') {
-      final GitHubReposInfo = await Repos();
-      if (GitHubReposInfo.isNotEmpty) {
-        await context.reply(MessageBuilder.embed(EmbedBuilder()
-          ..color = embedColor
-          ..title = 'dahliaOS GitHub repositories'
-          ..description = GitHubReposInfo.map((e) => '- $e').join('\n')));
+      final repos = await getRepos();
+      print(repos);
+      print(repos.map((e) => '- ${e.name}').join('\n'));
+      if (repos.isNotEmpty) {
+        await context.reply(
+          MessageBuilder.embed(
+            EmbedBuilder()
+              ..color = embedColor
+              ..title = 'dahliaOS GitHub repositories'
+              ..description = repos.map((e) => '- ${e.name}').join('\n'),
+          ),
+        );
       } else {
-        await context.reply(MessageBuilder.embed(EmbedBuilder()
-          ..color = embedColor
-          ..title = 'API Error'
-          ..description = 'Failed to fetch data from the GitHub API.'));
+        await context.reply(
+          MessageBuilder.embed(EmbedBuilder()
+            ..color = embedColor
+            ..title = 'API Error'
+            ..description = 'Failed to fetch data from the GitHub API.'),
+        );
       }
     } else if (arguments.first == 'repo') {
-      final GitHubRepoInfo = await RepoInfo(arguments[1]);
-      if (GitHubRepoInfo.name.isNotEmpty) {
-        await context.reply(MessageBuilder.embed(EmbedBuilder()
-          ..color = embedColor
-          ..title = GitHubRepoInfo.name
-          ..url = GitHubRepoInfo.url
-          ..fields
-              .add(EmbedFieldBuilder('Description', GitHubRepoInfo.description))
-          ..fields.add(EmbedFieldBuilder('Stars', GitHubRepoInfo.stars_count))
-          ..fields.add(EmbedFieldBuilder(
-              'Open issues count', GitHubRepoInfo.open_issues_count))
-          ..fields
-              .add(EmbedFieldBuilder('Forks count', GitHubRepoInfo.forks_count))
-          ..fields
-              .add(EmbedFieldBuilder('Language', GitHubRepoInfo.language))));
+      final repo = await getRepoInfo(arguments[1]);
+      if (repo.name.isNotEmpty) {
+        await context.reply(
+          MessageBuilder.embed(
+            EmbedBuilder()
+              ..color = embedColor
+              ..title = repo.name
+              ..url = repo.url
+              ..fields.add(
+                  EmbedFieldBuilder('Description', repo.description ?? 'N/A'))
+              ..fields.add(EmbedFieldBuilder('Stars', repo.starsCount))
+              ..fields.add(
+                  EmbedFieldBuilder('Open issues count', repo.openIssuesCount))
+              ..fields.add(EmbedFieldBuilder('Forks count', repo.forksCount))
+              ..fields
+                  .add(EmbedFieldBuilder('Language', repo.language ?? 'N/A')),
+          ),
+        );
       } else {
-        await context.reply(MessageBuilder.embed(EmbedBuilder()
-          ..color = embedColor
-          ..title = 'API Error'
-          ..description = 'Failed to fetch data from the GitHub API.'));
+        await context.reply(
+          MessageBuilder.embed(EmbedBuilder()
+            ..color = embedColor
+            ..title = 'API Error'
+            ..description = 'Failed to fetch data from the GitHub API.'),
+        );
       }
     }
   }
