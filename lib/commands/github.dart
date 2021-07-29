@@ -48,8 +48,6 @@ class GitHubCommand extends Command {
       }
     } else if (arguments.first == 'repos') {
       final repos = await getRepos();
-      print(repos);
-      print(repos.map((e) => '- ${e.name}').join('\n'));
       if (repos.isNotEmpty) {
         await context.reply(
           MessageBuilder.embed(

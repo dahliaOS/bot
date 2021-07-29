@@ -33,10 +33,8 @@ Future<List<GitHubRepo>> getRepos() async {
     final dataReposInfo = json.decode(responseRepos.body) as List<dynamic>;
     final allNames = <GitHubRepo>[];
     for (final repo in dataReposInfo.cast<Map<String, dynamic>>()) {
-      print(repo['name']);
       allNames.add(GitHubRepo.fromJson(repo));
     }
-    print(allNames);
     return allNames;
   } else {
     throw Exception('Failed to fetch data from the GitHub API.');
