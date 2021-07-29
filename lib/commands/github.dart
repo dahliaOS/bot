@@ -24,16 +24,18 @@ class GitHubCommand extends Command {
   @override
   FutureOr<void> onRun(CommandContext context, List<String> arguments) async {
     if (arguments.first == 'org') {
-      var orgInfo = await OrgInfo();
-      if (orgInfo['name'] != null) {
+      final GitHubOrgInfo = await OrgInfo();
+      if (GitHubOrgInfo.name.isNotEmpty) {
         await context.reply(MessageBuilder.embed(EmbedBuilder()
           ..color = embedColor
           ..title = 'dahliaOS GitHub organization'
-          ..url = orgInfo['html_url']
-          ..thumbnailUrl = orgInfo['avatar_url']
-          ..fields.add(EmbedFieldBuilder('Name', orgInfo['name']))
-          ..fields.add(EmbedFieldBuilder('Description', orgInfo['description']))
-          ..fields.add(EmbedFieldBuilder('Contact mail', orgInfo['email']))));
+          ..url = GitHubOrgInfo.url
+          ..thumbnailUrl = GitHubOrgInfo.avatar
+          ..fields.add(EmbedFieldBuilder('Name', GitHubOrgInfo.name))
+          ..fields
+              .add(EmbedFieldBuilder('Description', GitHubOrgInfo.description))
+          ..fields
+              .add(EmbedFieldBuilder('Contact mail', GitHubOrgInfo.contact))));
       } else {
         await context.reply(MessageBuilder.embed(EmbedBuilder()
           ..color = embedColor
@@ -41,12 +43,12 @@ class GitHubCommand extends Command {
           ..description = 'Failed to fetch data from the GitHub API.'));
       }
     } else if (arguments.first == 'repos') {
-      var reposInfo = await Repos();
-      if (reposInfo.isNotEmpty) {
+      final GitHubReposInfo = await Repos();
+      if (GitHubReposInfo.isNotEmpty) {
         await context.reply(MessageBuilder.embed(EmbedBuilder()
           ..color = embedColor
           ..title = 'dahliaOS GitHub repositories'
-          ..description = reposInfo.map((e) => '- $e').join('\n')));
+          ..description = GitHubReposInfo.map((e) => '- $e').join('\n')));
       } else {
         await context.reply(MessageBuilder.embed(EmbedBuilder()
           ..color = embedColor
@@ -54,27 +56,27 @@ class GitHubCommand extends Command {
           ..description = 'Failed to fetch data from the GitHub API.'));
       }
     } else if (arguments.first == 'repo') {
-      var repoInfo = await RepoInfo(arguments[1]);
-      if (repoInfo['name'] != null) {
+      final GitHubRepoInfo = await RepoInfo(arguments[1]);
+      if (GitHubRepoInfo.name.isNotEmpty) {
         await context.reply(MessageBuilder.embed(EmbedBuilder()
           ..color = embedColor
-          ..title = repoInfo['name']
-          ..url = repoInfo['html_url']
+          ..title = GitHubRepoInfo.name
+          ..url = GitHubRepoInfo.url
           ..fields
-              .add(EmbedFieldBuilder('Description', repoInfo['description']))
-          ..fields.add(EmbedFieldBuilder('Stars', repoInfo['stargazers_count']))
+              .add(EmbedFieldBuilder('Description', GitHubRepoInfo.description))
+          ..fields.add(EmbedFieldBuilder('Stars', GitHubRepoInfo.stars_count))
           ..fields.add(EmbedFieldBuilder(
-              'Open issues count', repoInfo['open_issues_count']))
+              'Open issues count', GitHubRepoInfo.open_issues_count))
           ..fields
-              .add(EmbedFieldBuilder('Forks count', repoInfo['forks_count']))
-          ..fields.add(EmbedFieldBuilder('Language', repoInfo['language']))));
+              .add(EmbedFieldBuilder('Forks count', GitHubRepoInfo.forks_count))
+          ..fields
+              .add(EmbedFieldBuilder('Language', GitHubRepoInfo.language))));
       } else {
         await context.reply(MessageBuilder.embed(EmbedBuilder()
           ..color = embedColor
           ..title = 'API Error'
           ..description = 'Failed to fetch data from the GitHub API.'));
       }
-      ;
     }
   }
 
