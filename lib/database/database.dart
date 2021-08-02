@@ -1,6 +1,7 @@
 import 'dart:ffi';
 import 'dart:io';
 
+import 'package:discord_bot/database/github_helper.dart';
 import 'package:discord_bot/database/preferences_helper.dart';
 import 'package:moor/moor.dart';
 import 'package:moor/ffi.dart';
@@ -17,7 +18,29 @@ class Preferences extends Table {
   Set<Column> get primaryKey => {guildId};
 }
 
-@UseMoor(tables: [Preferences], daos: [PreferencesHelper])
+class GitHubOrgDB extends Table {
+  TextColumn get name => text()();
+  TextColumn get url => text()();
+  TextColumn get avatar => text()();
+  TextColumn get description => text().nullable()();
+  TextColumn get contact => text()();
+  DateTimeColumn get timestamp => dateTime()();
+}
+
+class GitHubRepoDB extends Table {
+  TextColumn get name => text()();
+  TextColumn get language => text().nullable()();
+  TextColumn get url => text()();
+  IntColumn get starsCount => integer()();
+  TextColumn get description => text().nullable()();
+  IntColumn get openIssuesCount => integer()();
+  IntColumn get forksCount => integer()();
+  DateTimeColumn get timestamp => dateTime()();
+}
+
+@UseMoor(
+    tables: [Preferences, GitHubOrgDB, GitHubRepoDB],
+    daos: [PreferencesHelper, GitHubHelper])
 class Database extends _$Database {
   Database(QueryExecutor e) : super(e);
 
