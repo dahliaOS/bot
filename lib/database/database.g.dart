@@ -177,25 +177,24 @@ class $PreferencesTable extends Preferences
   }
 }
 
-class GitHubOrgDBData extends DataClass implements Insertable<GitHubOrgDBData> {
+class GitHubOrg extends DataClass implements Insertable<GitHubOrg> {
   final String name;
   final String url;
   final String avatar;
   final String? description;
-  final String contact;
+  final String? email;
   final DateTime timestamp;
-  GitHubOrgDBData(
+  GitHubOrg(
       {required this.name,
       required this.url,
       required this.avatar,
       this.description,
-      required this.contact,
+      this.email,
       required this.timestamp});
-  factory GitHubOrgDBData.fromData(
-      Map<String, dynamic> data, GeneratedDatabase db,
+  factory GitHubOrg.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    return GitHubOrgDBData(
+    return GitHubOrg(
       name: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
       url: const StringType()
@@ -204,8 +203,8 @@ class GitHubOrgDBData extends DataClass implements Insertable<GitHubOrgDBData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}avatar'])!,
       description: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}description']),
-      contact: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}contact'])!,
+      email: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}email']),
       timestamp: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}timestamp'])!,
     );
@@ -219,33 +218,36 @@ class GitHubOrgDBData extends DataClass implements Insertable<GitHubOrgDBData> {
     if (!nullToAbsent || description != null) {
       map['description'] = Variable<String?>(description);
     }
-    map['contact'] = Variable<String>(contact);
+    if (!nullToAbsent || email != null) {
+      map['email'] = Variable<String?>(email);
+    }
     map['timestamp'] = Variable<DateTime>(timestamp);
     return map;
   }
 
-  GitHubOrgDBCompanion toCompanion(bool nullToAbsent) {
-    return GitHubOrgDBCompanion(
+  GitHubOrgsCompanion toCompanion(bool nullToAbsent) {
+    return GitHubOrgsCompanion(
       name: Value(name),
       url: Value(url),
       avatar: Value(avatar),
       description: description == null && nullToAbsent
           ? const Value.absent()
           : Value(description),
-      contact: Value(contact),
+      email:
+          email == null && nullToAbsent ? const Value.absent() : Value(email),
       timestamp: Value(timestamp),
     );
   }
 
-  factory GitHubOrgDBData.fromJson(Map<String, dynamic> json,
+  factory GitHubOrg.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return GitHubOrgDBData(
+    return GitHubOrg(
       name: serializer.fromJson<String>(json['name']),
       url: serializer.fromJson<String>(json['url']),
       avatar: serializer.fromJson<String>(json['avatar']),
       description: serializer.fromJson<String?>(json['description']),
-      contact: serializer.fromJson<String>(json['contact']),
+      email: serializer.fromJson<String?>(json['email']),
       timestamp: serializer.fromJson<DateTime>(json['timestamp']),
     );
   }
@@ -257,34 +259,34 @@ class GitHubOrgDBData extends DataClass implements Insertable<GitHubOrgDBData> {
       'url': serializer.toJson<String>(url),
       'avatar': serializer.toJson<String>(avatar),
       'description': serializer.toJson<String?>(description),
-      'contact': serializer.toJson<String>(contact),
+      'email': serializer.toJson<String?>(email),
       'timestamp': serializer.toJson<DateTime>(timestamp),
     };
   }
 
-  GitHubOrgDBData copyWith(
+  GitHubOrg copyWith(
           {String? name,
           String? url,
           String? avatar,
           String? description,
-          String? contact,
+          String? email,
           DateTime? timestamp}) =>
-      GitHubOrgDBData(
+      GitHubOrg(
         name: name ?? this.name,
         url: url ?? this.url,
         avatar: avatar ?? this.avatar,
         description: description ?? this.description,
-        contact: contact ?? this.contact,
+        email: email ?? this.email,
         timestamp: timestamp ?? this.timestamp,
       );
   @override
   String toString() {
-    return (StringBuffer('GitHubOrgDBData(')
+    return (StringBuffer('GitHubOrg(')
           ..write('name: $name, ')
           ..write('url: $url, ')
           ..write('avatar: $avatar, ')
           ..write('description: $description, ')
-          ..write('contact: $contact, ')
+          ..write('email: $email, ')
           ..write('timestamp: $timestamp')
           ..write(')'))
         .toString();
@@ -298,52 +300,51 @@ class GitHubOrgDBData extends DataClass implements Insertable<GitHubOrgDBData> {
           $mrjc(
               avatar.hashCode,
               $mrjc(description.hashCode,
-                  $mrjc(contact.hashCode, timestamp.hashCode))))));
+                  $mrjc(email.hashCode, timestamp.hashCode))))));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is GitHubOrgDBData &&
+      (other is GitHubOrg &&
           other.name == this.name &&
           other.url == this.url &&
           other.avatar == this.avatar &&
           other.description == this.description &&
-          other.contact == this.contact &&
+          other.email == this.email &&
           other.timestamp == this.timestamp);
 }
 
-class GitHubOrgDBCompanion extends UpdateCompanion<GitHubOrgDBData> {
+class GitHubOrgsCompanion extends UpdateCompanion<GitHubOrg> {
   final Value<String> name;
   final Value<String> url;
   final Value<String> avatar;
   final Value<String?> description;
-  final Value<String> contact;
+  final Value<String?> email;
   final Value<DateTime> timestamp;
-  const GitHubOrgDBCompanion({
+  const GitHubOrgsCompanion({
     this.name = const Value.absent(),
     this.url = const Value.absent(),
     this.avatar = const Value.absent(),
     this.description = const Value.absent(),
-    this.contact = const Value.absent(),
+    this.email = const Value.absent(),
     this.timestamp = const Value.absent(),
   });
-  GitHubOrgDBCompanion.insert({
+  GitHubOrgsCompanion.insert({
     required String name,
     required String url,
     required String avatar,
     this.description = const Value.absent(),
-    required String contact,
+    this.email = const Value.absent(),
     required DateTime timestamp,
   })  : name = Value(name),
         url = Value(url),
         avatar = Value(avatar),
-        contact = Value(contact),
         timestamp = Value(timestamp);
-  static Insertable<GitHubOrgDBData> custom({
+  static Insertable<GitHubOrg> custom({
     Expression<String>? name,
     Expression<String>? url,
     Expression<String>? avatar,
     Expression<String?>? description,
-    Expression<String>? contact,
+    Expression<String?>? email,
     Expression<DateTime>? timestamp,
   }) {
     return RawValuesInsertable({
@@ -351,24 +352,24 @@ class GitHubOrgDBCompanion extends UpdateCompanion<GitHubOrgDBData> {
       if (url != null) 'url': url,
       if (avatar != null) 'avatar': avatar,
       if (description != null) 'description': description,
-      if (contact != null) 'contact': contact,
+      if (email != null) 'email': email,
       if (timestamp != null) 'timestamp': timestamp,
     });
   }
 
-  GitHubOrgDBCompanion copyWith(
+  GitHubOrgsCompanion copyWith(
       {Value<String>? name,
       Value<String>? url,
       Value<String>? avatar,
       Value<String?>? description,
-      Value<String>? contact,
+      Value<String?>? email,
       Value<DateTime>? timestamp}) {
-    return GitHubOrgDBCompanion(
+    return GitHubOrgsCompanion(
       name: name ?? this.name,
       url: url ?? this.url,
       avatar: avatar ?? this.avatar,
       description: description ?? this.description,
-      contact: contact ?? this.contact,
+      email: email ?? this.email,
       timestamp: timestamp ?? this.timestamp,
     );
   }
@@ -388,8 +389,8 @@ class GitHubOrgDBCompanion extends UpdateCompanion<GitHubOrgDBData> {
     if (description.present) {
       map['description'] = Variable<String?>(description.value);
     }
-    if (contact.present) {
-      map['contact'] = Variable<String>(contact.value);
+    if (email.present) {
+      map['email'] = Variable<String?>(email.value);
     }
     if (timestamp.present) {
       map['timestamp'] = Variable<DateTime>(timestamp.value);
@@ -399,23 +400,23 @@ class GitHubOrgDBCompanion extends UpdateCompanion<GitHubOrgDBData> {
 
   @override
   String toString() {
-    return (StringBuffer('GitHubOrgDBCompanion(')
+    return (StringBuffer('GitHubOrgsCompanion(')
           ..write('name: $name, ')
           ..write('url: $url, ')
           ..write('avatar: $avatar, ')
           ..write('description: $description, ')
-          ..write('contact: $contact, ')
+          ..write('email: $email, ')
           ..write('timestamp: $timestamp')
           ..write(')'))
         .toString();
   }
 }
 
-class $GitHubOrgDBTable extends GitHubOrgDB
-    with TableInfo<$GitHubOrgDBTable, GitHubOrgDBData> {
+class $GitHubOrgsTable extends GitHubOrgs
+    with TableInfo<$GitHubOrgsTable, GitHubOrg> {
   final GeneratedDatabase _db;
   final String? _alias;
-  $GitHubOrgDBTable(this._db, [this._alias]);
+  $GitHubOrgsTable(this._db, [this._alias]);
   final VerificationMeta _nameMeta = const VerificationMeta('name');
   late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
       'name', aliasedName, false,
@@ -433,23 +434,23 @@ class $GitHubOrgDBTable extends GitHubOrgDB
   late final GeneratedColumn<String?> description = GeneratedColumn<String?>(
       'description', aliasedName, true,
       typeName: 'TEXT', requiredDuringInsert: false);
-  final VerificationMeta _contactMeta = const VerificationMeta('contact');
-  late final GeneratedColumn<String?> contact = GeneratedColumn<String?>(
-      'contact', aliasedName, false,
-      typeName: 'TEXT', requiredDuringInsert: true);
+  final VerificationMeta _emailMeta = const VerificationMeta('email');
+  late final GeneratedColumn<String?> email = GeneratedColumn<String?>(
+      'email', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false);
   final VerificationMeta _timestampMeta = const VerificationMeta('timestamp');
   late final GeneratedColumn<DateTime?> timestamp = GeneratedColumn<DateTime?>(
       'timestamp', aliasedName, false,
       typeName: 'INTEGER', requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
-      [name, url, avatar, description, contact, timestamp];
+      [name, url, avatar, description, email, timestamp];
   @override
-  String get aliasedName => _alias ?? 'git_hub_org_d_b';
+  String get aliasedName => _alias ?? 'git_hub_orgs';
   @override
-  String get actualTableName => 'git_hub_org_d_b';
+  String get actualTableName => 'git_hub_orgs';
   @override
-  VerificationContext validateIntegrity(Insertable<GitHubOrgDBData> instance,
+  VerificationContext validateIntegrity(Insertable<GitHubOrg> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -477,11 +478,9 @@ class $GitHubOrgDBTable extends GitHubOrgDB
           description.isAcceptableOrUnknown(
               data['description']!, _descriptionMeta));
     }
-    if (data.containsKey('contact')) {
-      context.handle(_contactMeta,
-          contact.isAcceptableOrUnknown(data['contact']!, _contactMeta));
-    } else if (isInserting) {
-      context.missing(_contactMeta);
+    if (data.containsKey('email')) {
+      context.handle(
+          _emailMeta, email.isAcceptableOrUnknown(data['email']!, _emailMeta));
     }
     if (data.containsKey('timestamp')) {
       context.handle(_timestampMeta,
@@ -495,19 +494,18 @@ class $GitHubOrgDBTable extends GitHubOrgDB
   @override
   Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
   @override
-  GitHubOrgDBData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return GitHubOrgDBData.fromData(data, _db,
+  GitHubOrg map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return GitHubOrg.fromData(data, _db,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
-  $GitHubOrgDBTable createAlias(String alias) {
-    return $GitHubOrgDBTable(_db, alias);
+  $GitHubOrgsTable createAlias(String alias) {
+    return $GitHubOrgsTable(_db, alias);
   }
 }
 
-class GitHubRepoDBData extends DataClass
-    implements Insertable<GitHubRepoDBData> {
+class GitHubRepo extends DataClass implements Insertable<GitHubRepo> {
   final String name;
   final String? language;
   final String url;
@@ -516,7 +514,7 @@ class GitHubRepoDBData extends DataClass
   final int openIssuesCount;
   final int forksCount;
   final DateTime timestamp;
-  GitHubRepoDBData(
+  GitHubRepo(
       {required this.name,
       this.language,
       required this.url,
@@ -525,11 +523,10 @@ class GitHubRepoDBData extends DataClass
       required this.openIssuesCount,
       required this.forksCount,
       required this.timestamp});
-  factory GitHubRepoDBData.fromData(
-      Map<String, dynamic> data, GeneratedDatabase db,
+  factory GitHubRepo.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    return GitHubRepoDBData(
+    return GitHubRepo(
       name: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
       language: const StringType()
@@ -566,8 +563,8 @@ class GitHubRepoDBData extends DataClass
     return map;
   }
 
-  GitHubRepoDBCompanion toCompanion(bool nullToAbsent) {
-    return GitHubRepoDBCompanion(
+  GitHubReposCompanion toCompanion(bool nullToAbsent) {
+    return GitHubReposCompanion(
       name: Value(name),
       language: language == null && nullToAbsent
           ? const Value.absent()
@@ -583,10 +580,10 @@ class GitHubRepoDBData extends DataClass
     );
   }
 
-  factory GitHubRepoDBData.fromJson(Map<String, dynamic> json,
+  factory GitHubRepo.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return GitHubRepoDBData(
+    return GitHubRepo(
       name: serializer.fromJson<String>(json['name']),
       language: serializer.fromJson<String?>(json['language']),
       url: serializer.fromJson<String>(json['url']),
@@ -612,7 +609,7 @@ class GitHubRepoDBData extends DataClass
     };
   }
 
-  GitHubRepoDBData copyWith(
+  GitHubRepo copyWith(
           {String? name,
           String? language,
           String? url,
@@ -621,7 +618,7 @@ class GitHubRepoDBData extends DataClass
           int? openIssuesCount,
           int? forksCount,
           DateTime? timestamp}) =>
-      GitHubRepoDBData(
+      GitHubRepo(
         name: name ?? this.name,
         language: language ?? this.language,
         url: url ?? this.url,
@@ -633,7 +630,7 @@ class GitHubRepoDBData extends DataClass
       );
   @override
   String toString() {
-    return (StringBuffer('GitHubRepoDBData(')
+    return (StringBuffer('GitHubRepo(')
           ..write('name: $name, ')
           ..write('language: $language, ')
           ..write('url: $url, ')
@@ -662,7 +659,7 @@ class GitHubRepoDBData extends DataClass
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is GitHubRepoDBData &&
+      (other is GitHubRepo &&
           other.name == this.name &&
           other.language == this.language &&
           other.url == this.url &&
@@ -673,7 +670,7 @@ class GitHubRepoDBData extends DataClass
           other.timestamp == this.timestamp);
 }
 
-class GitHubRepoDBCompanion extends UpdateCompanion<GitHubRepoDBData> {
+class GitHubReposCompanion extends UpdateCompanion<GitHubRepo> {
   final Value<String> name;
   final Value<String?> language;
   final Value<String> url;
@@ -682,7 +679,7 @@ class GitHubRepoDBCompanion extends UpdateCompanion<GitHubRepoDBData> {
   final Value<int> openIssuesCount;
   final Value<int> forksCount;
   final Value<DateTime> timestamp;
-  const GitHubRepoDBCompanion({
+  const GitHubReposCompanion({
     this.name = const Value.absent(),
     this.language = const Value.absent(),
     this.url = const Value.absent(),
@@ -692,7 +689,7 @@ class GitHubRepoDBCompanion extends UpdateCompanion<GitHubRepoDBData> {
     this.forksCount = const Value.absent(),
     this.timestamp = const Value.absent(),
   });
-  GitHubRepoDBCompanion.insert({
+  GitHubReposCompanion.insert({
     required String name,
     this.language = const Value.absent(),
     required String url,
@@ -707,7 +704,7 @@ class GitHubRepoDBCompanion extends UpdateCompanion<GitHubRepoDBData> {
         openIssuesCount = Value(openIssuesCount),
         forksCount = Value(forksCount),
         timestamp = Value(timestamp);
-  static Insertable<GitHubRepoDBData> custom({
+  static Insertable<GitHubRepo> custom({
     Expression<String>? name,
     Expression<String?>? language,
     Expression<String>? url,
@@ -729,7 +726,7 @@ class GitHubRepoDBCompanion extends UpdateCompanion<GitHubRepoDBData> {
     });
   }
 
-  GitHubRepoDBCompanion copyWith(
+  GitHubReposCompanion copyWith(
       {Value<String>? name,
       Value<String?>? language,
       Value<String>? url,
@@ -738,7 +735,7 @@ class GitHubRepoDBCompanion extends UpdateCompanion<GitHubRepoDBData> {
       Value<int>? openIssuesCount,
       Value<int>? forksCount,
       Value<DateTime>? timestamp}) {
-    return GitHubRepoDBCompanion(
+    return GitHubReposCompanion(
       name: name ?? this.name,
       language: language ?? this.language,
       url: url ?? this.url,
@@ -782,7 +779,7 @@ class GitHubRepoDBCompanion extends UpdateCompanion<GitHubRepoDBData> {
 
   @override
   String toString() {
-    return (StringBuffer('GitHubRepoDBCompanion(')
+    return (StringBuffer('GitHubReposCompanion(')
           ..write('name: $name, ')
           ..write('language: $language, ')
           ..write('url: $url, ')
@@ -796,11 +793,11 @@ class GitHubRepoDBCompanion extends UpdateCompanion<GitHubRepoDBData> {
   }
 }
 
-class $GitHubRepoDBTable extends GitHubRepoDB
-    with TableInfo<$GitHubRepoDBTable, GitHubRepoDBData> {
+class $GitHubReposTable extends GitHubRepos
+    with TableInfo<$GitHubReposTable, GitHubRepo> {
   final GeneratedDatabase _db;
   final String? _alias;
-  $GitHubRepoDBTable(this._db, [this._alias]);
+  $GitHubReposTable(this._db, [this._alias]);
   final VerificationMeta _nameMeta = const VerificationMeta('name');
   late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
       'name', aliasedName, false,
@@ -847,11 +844,11 @@ class $GitHubRepoDBTable extends GitHubRepoDB
         timestamp
       ];
   @override
-  String get aliasedName => _alias ?? 'git_hub_repo_d_b';
+  String get aliasedName => _alias ?? 'git_hub_repos';
   @override
-  String get actualTableName => 'git_hub_repo_d_b';
+  String get actualTableName => 'git_hub_repos';
   @override
-  VerificationContext validateIntegrity(Insertable<GitHubRepoDBData> instance,
+  VerificationContext validateIntegrity(Insertable<GitHubRepo> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -913,22 +910,240 @@ class $GitHubRepoDBTable extends GitHubRepoDB
   @override
   Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
   @override
-  GitHubRepoDBData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return GitHubRepoDBData.fromData(data, _db,
+  GitHubRepo map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return GitHubRepo.fromData(data, _db,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
-  $GitHubRepoDBTable createAlias(String alias) {
-    return $GitHubRepoDBTable(_db, alias);
+  $GitHubReposTable createAlias(String alias) {
+    return $GitHubReposTable(_db, alias);
   }
+}
+
+class GitHubRepoList extends DataClass implements Insertable<GitHubRepoList> {
+  final String org;
+  final List<GitHubMinimalRepo> repos;
+  final DateTime timestamp;
+  GitHubRepoList(
+      {required this.org, required this.repos, required this.timestamp});
+  factory GitHubRepoList.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return GitHubRepoList(
+      org: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}org'])!,
+      repos: $GitHubRepoListsTable.$converter0.mapToDart(const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}repos']))!,
+      timestamp: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}timestamp'])!,
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['org'] = Variable<String>(org);
+    {
+      final converter = $GitHubRepoListsTable.$converter0;
+      map['repos'] = Variable<String>(converter.mapToSql(repos)!);
+    }
+    map['timestamp'] = Variable<DateTime>(timestamp);
+    return map;
+  }
+
+  GitHubRepoListsCompanion toCompanion(bool nullToAbsent) {
+    return GitHubRepoListsCompanion(
+      org: Value(org),
+      repos: Value(repos),
+      timestamp: Value(timestamp),
+    );
+  }
+
+  factory GitHubRepoList.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return GitHubRepoList(
+      org: serializer.fromJson<String>(json['org']),
+      repos: serializer.fromJson<List<GitHubMinimalRepo>>(json['repos']),
+      timestamp: serializer.fromJson<DateTime>(json['timestamp']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'org': serializer.toJson<String>(org),
+      'repos': serializer.toJson<List<GitHubMinimalRepo>>(repos),
+      'timestamp': serializer.toJson<DateTime>(timestamp),
+    };
+  }
+
+  GitHubRepoList copyWith(
+          {String? org, List<GitHubMinimalRepo>? repos, DateTime? timestamp}) =>
+      GitHubRepoList(
+        org: org ?? this.org,
+        repos: repos ?? this.repos,
+        timestamp: timestamp ?? this.timestamp,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('GitHubRepoList(')
+          ..write('org: $org, ')
+          ..write('repos: $repos, ')
+          ..write('timestamp: $timestamp')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      $mrjf($mrjc(org.hashCode, $mrjc(repos.hashCode, timestamp.hashCode)));
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GitHubRepoList &&
+          other.org == this.org &&
+          other.repos == this.repos &&
+          other.timestamp == this.timestamp);
+}
+
+class GitHubRepoListsCompanion extends UpdateCompanion<GitHubRepoList> {
+  final Value<String> org;
+  final Value<List<GitHubMinimalRepo>> repos;
+  final Value<DateTime> timestamp;
+  const GitHubRepoListsCompanion({
+    this.org = const Value.absent(),
+    this.repos = const Value.absent(),
+    this.timestamp = const Value.absent(),
+  });
+  GitHubRepoListsCompanion.insert({
+    required String org,
+    required List<GitHubMinimalRepo> repos,
+    required DateTime timestamp,
+  })  : org = Value(org),
+        repos = Value(repos),
+        timestamp = Value(timestamp);
+  static Insertable<GitHubRepoList> custom({
+    Expression<String>? org,
+    Expression<List<GitHubMinimalRepo>>? repos,
+    Expression<DateTime>? timestamp,
+  }) {
+    return RawValuesInsertable({
+      if (org != null) 'org': org,
+      if (repos != null) 'repos': repos,
+      if (timestamp != null) 'timestamp': timestamp,
+    });
+  }
+
+  GitHubRepoListsCompanion copyWith(
+      {Value<String>? org,
+      Value<List<GitHubMinimalRepo>>? repos,
+      Value<DateTime>? timestamp}) {
+    return GitHubRepoListsCompanion(
+      org: org ?? this.org,
+      repos: repos ?? this.repos,
+      timestamp: timestamp ?? this.timestamp,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (org.present) {
+      map['org'] = Variable<String>(org.value);
+    }
+    if (repos.present) {
+      final converter = $GitHubRepoListsTable.$converter0;
+      map['repos'] = Variable<String>(converter.mapToSql(repos.value)!);
+    }
+    if (timestamp.present) {
+      map['timestamp'] = Variable<DateTime>(timestamp.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GitHubRepoListsCompanion(')
+          ..write('org: $org, ')
+          ..write('repos: $repos, ')
+          ..write('timestamp: $timestamp')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $GitHubRepoListsTable extends GitHubRepoLists
+    with TableInfo<$GitHubRepoListsTable, GitHubRepoList> {
+  final GeneratedDatabase _db;
+  final String? _alias;
+  $GitHubRepoListsTable(this._db, [this._alias]);
+  final VerificationMeta _orgMeta = const VerificationMeta('org');
+  late final GeneratedColumn<String?> org = GeneratedColumn<String?>(
+      'org', aliasedName, false,
+      typeName: 'TEXT', requiredDuringInsert: true);
+  final VerificationMeta _reposMeta = const VerificationMeta('repos');
+  late final GeneratedColumnWithTypeConverter<List<GitHubMinimalRepo>, String?>
+      repos = GeneratedColumn<String?>('repos', aliasedName, false,
+              typeName: 'TEXT', requiredDuringInsert: true)
+          .withConverter<List<GitHubMinimalRepo>>(
+              $GitHubRepoListsTable.$converter0);
+  final VerificationMeta _timestampMeta = const VerificationMeta('timestamp');
+  late final GeneratedColumn<DateTime?> timestamp = GeneratedColumn<DateTime?>(
+      'timestamp', aliasedName, false,
+      typeName: 'INTEGER', requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [org, repos, timestamp];
+  @override
+  String get aliasedName => _alias ?? 'git_hub_repo_lists';
+  @override
+  String get actualTableName => 'git_hub_repo_lists';
+  @override
+  VerificationContext validateIntegrity(Insertable<GitHubRepoList> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('org')) {
+      context.handle(
+          _orgMeta, org.isAcceptableOrUnknown(data['org']!, _orgMeta));
+    } else if (isInserting) {
+      context.missing(_orgMeta);
+    }
+    context.handle(_reposMeta, const VerificationResult.success());
+    if (data.containsKey('timestamp')) {
+      context.handle(_timestampMeta,
+          timestamp.isAcceptableOrUnknown(data['timestamp']!, _timestampMeta));
+    } else if (isInserting) {
+      context.missing(_timestampMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  @override
+  GitHubRepoList map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return GitHubRepoList.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  $GitHubRepoListsTable createAlias(String alias) {
+    return $GitHubRepoListsTable(_db, alias);
+  }
+
+  static TypeConverter<List<GitHubMinimalRepo>, String> $converter0 =
+      const GitHubRepoTypeConverter();
 }
 
 abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   late final $PreferencesTable preferences = $PreferencesTable(this);
-  late final $GitHubOrgDBTable gitHubOrgDB = $GitHubOrgDBTable(this);
-  late final $GitHubRepoDBTable gitHubRepoDB = $GitHubRepoDBTable(this);
+  late final $GitHubOrgsTable gitHubOrgs = $GitHubOrgsTable(this);
+  late final $GitHubReposTable gitHubRepos = $GitHubReposTable(this);
+  late final $GitHubRepoListsTable gitHubRepoLists =
+      $GitHubRepoListsTable(this);
   late final PreferencesHelper preferencesHelper =
       PreferencesHelper(this as Database);
   late final GitHubHelper gitHubHelper = GitHubHelper(this as Database);
@@ -936,5 +1151,5 @@ abstract class _$Database extends GeneratedDatabase {
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [preferences, gitHubOrgDB, gitHubRepoDB];
+      [preferences, gitHubOrgs, gitHubRepos, gitHubRepoLists];
 }

@@ -35,7 +35,7 @@ class GitHubCommand extends Command {
               ..thumbnailUrl = org.avatar
               ..fields.add(EmbedFieldBuilder('Name', org.name))
               ..fields.add(EmbedFieldBuilder('Description', org.description))
-              ..fields.add(EmbedFieldBuilder('Contact mail', org.contact)),
+              ..fields.add(EmbedFieldBuilder('Contact mail', org.email)),
           ),
         );
       } else {
@@ -47,14 +47,16 @@ class GitHubCommand extends Command {
         );
       }
     } else if (arguments.first == 'repos') {
-      final repos = await getRepos();
-      if (repos.isNotEmpty) {
+      final repoList = await getRepos();
+      if (repoList.repos.isNotEmpty) {
         await context.reply(
           MessageBuilder.embed(
             EmbedBuilder()
               ..color = embedColor
               ..title = 'dahliaOS GitHub repositories'
-              ..description = repos.map((e) => '- ${e.name}').join('\n'),
+              ..description = repoList.repos
+                  .map((e) => '- [${e.name}](${e.url})')
+                  .join('\n'),
           ),
         );
       } else {

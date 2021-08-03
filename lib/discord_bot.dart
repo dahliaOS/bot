@@ -4,6 +4,7 @@ import 'package:discord_bot/commands/prefix.dart';
 import 'package:discord_bot/commands/github.dart';
 import 'package:discord_bot/core/command.dart';
 import 'package:discord_bot/database/database.dart';
+import 'package:discord_bot/database/github_helper.dart';
 import 'package:discord_bot/database/preferences_helper.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commander/commander.dart';
@@ -11,6 +12,7 @@ import 'package:dotenv/dotenv.dart' show load, env;
 
 late final Database database;
 late final PreferencesHelper helper;
+late final GitHubHelper gitHubHelper;
 final names = <String>[];
 final List<Command> commands = [
   CountCommand(),
@@ -27,6 +29,7 @@ class DiscordBot {
     load();
     database = Database(constructDb());
     helper = database.preferencesHelper;
+    gitHubHelper = database.gitHubHelper;
     final token = env['TOKEN'];
     bot = Nyxx(token!, GatewayIntents.allUnprivileged);
 

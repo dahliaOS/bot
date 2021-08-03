@@ -7,6 +7,7 @@ part of 'github_helper.dart';
 // **************************************************************************
 
 mixin _$GitHubHelperMixin on DatabaseAccessor<Database> {
-  $GitHubOrgDBTable get gitHubOrgDB => attachedDatabase.gitHubOrgDB;
-  $GitHubRepoDBTable get gitHubRepoDB => attachedDatabase.gitHubRepoDB;
+  $GitHubOrgsTable get gitHubOrgs => attachedDatabase.gitHubOrgs;
+  $GitHubReposTable get gitHubRepos => attachedDatabase.gitHubRepos;
+  $GitHubRepoListsTable get gitHubRepoLists => attachedDatabase.gitHubRepoLists;
 }
