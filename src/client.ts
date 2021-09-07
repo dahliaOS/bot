@@ -2,8 +2,7 @@ import "reflect-metadata";
 import path from "path";
 import { Intents, Interaction, Message } from "discord.js";
 import { Client } from "discordx";
-
-require('dotenv').config()
+import "dotenv/config";
 
 const client = new Client({
   prefix: "!",
