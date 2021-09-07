@@ -15,3 +15,8 @@ doc/api/
 .env*
 
 .vscode
+
+# Files created by TypeScript
+
+node_modules
+yarn.lock
