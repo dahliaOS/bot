@@ -46,6 +46,10 @@
      ```
      cd bot
      ```
+ 1. Get dependencies
+     ```
+     dart pub get
+     ```
  1. Run
      ```
      dart run bin/main.dart
